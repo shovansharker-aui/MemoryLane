@@ -10,6 +10,7 @@ import com.google.android.material.chip.Chip
 import com.memorylane.app.data.AppDatabase
 import com.memorylane.app.data.MediaScanner
 import com.memorylane.app.data.PhotoAnalysisCache
+import com.memorylane.app.data.PhotoMetadataReader
 import com.memorylane.app.data.PhotoQualityAnalyzer
 import com.memorylane.app.data.SmartTagger
 import com.memorylane.app.databinding.ActivityGalleryBinding
@@ -154,6 +155,7 @@ class GalleryActivity : AppCompatActivity() {
                     concurrency.withPermit {
                         val tags = SmartTagger.tagsFor(this@GalleryActivity, item.uri)
                         val quality = PhotoQualityAnalyzer.analyze(this@GalleryActivity, item.uri)
+                        val metadata = PhotoMetadataReader.read(this@GalleryActivity, item.uri)
 
                         if (tags.isNotEmpty()) {
                             synchronized(tagsByUri) { tagsByUri[item.uri] = tags }
@@ -169,7 +171,10 @@ class GalleryActivity : AppCompatActivity() {
                                     tags = tags.joinToString(","),
                                     sharpness = quality?.sharpness ?: 0.0,
                                     hash = quality?.hash ?: 0L,
-                                    fileLastModified = item.lastModified
+                                    fileLastModified = item.lastModified,
+                                    dateTaken = metadata.dateTakenMillis,
+                                    latitude = metadata.latitude,
+                                    longitude = metadata.longitude
                                 )
                             )
                         }
@@ -318,5 +323,37 @@ class GalleryActivity : AppCompatActivity() {
         const val EXTRA_FOLDER_URI = "extra_folder_uri"
         private const val FILTER_BLURRY = "__blurry__"
         private const val FILTER_DUPLICATES = "__duplicates__"
+    }
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
+        menuInflater.inflate(com.memorylane.app.R.menu.menu_gallery, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        val projectName = intent.getStringExtra(EXTRA_PROJECT_NAME) ?: "Project"
+        val folderUri = intent.getStringExtra(EXTRA_FOLDER_URI)
+
+        return when (item.itemId) {
+            com.memorylane.app.R.id.action_timeline -> {
+                if (folderUri != null) {
+                    startActivity(Intent(this, TimelineActivity::class.java).apply {
+                        putExtra(EXTRA_PROJECT_NAME, projectName)
+                        putExtra(EXTRA_FOLDER_URI, folderUri)
+                    })
+                }
+                true
+            }
+            com.memorylane.app.R.id.action_map -> {
+                if (folderUri != null) {
+                    startActivity(Intent(this, MapActivity::class.java).apply {
+                        putExtra(EXTRA_PROJECT_NAME, projectName)
+                        putExtra(EXTRA_FOLDER_URI, folderUri)
+                    })
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

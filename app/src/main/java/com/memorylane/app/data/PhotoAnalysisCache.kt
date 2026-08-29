@@ -18,6 +18,9 @@ data class PhotoAnalysisCache(
     val sharpness: Double,
     val hash: Long,
     val fileLastModified: Long,
+    val dateTaken: Long? = null,   // from EXIF, null if unavailable
+    val latitude: Double? = null,  // from EXIF GPS, null if unavailable
+    val longitude: Double? = null,
     val analyzedAt: Long = System.currentTimeMillis()
 ) {
     fun tagList(): List<String> =

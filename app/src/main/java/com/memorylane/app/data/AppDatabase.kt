@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [Project::class, PhotoAnalysisCache::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -40,6 +40,15 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Adds EXIF date/GPS columns for the Timeline and Map views.
+        private val MIGRATION_2_3 = object : androidx.room.migration.Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE photo_analysis_cache ADD COLUMN dateTaken INTEGER")
+                db.execSQL("ALTER TABLE photo_analysis_cache ADD COLUMN latitude REAL")
+                db.execSQL("ALTER TABLE photo_analysis_cache ADD COLUMN longitude REAL")
+            }
+        }
+
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -47,7 +56,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "memory_lane_db"
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance
