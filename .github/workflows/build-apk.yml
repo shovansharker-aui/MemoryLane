@@ -1,11 +1,19 @@
 name: Build APK
 
-# Runs automatically every time you push to main, and also lets you
-# trigger it manually from the Actions tab on GitHub.
+# Two ways to trigger this:
+# 1. Push a tag like "v1.0.0" -> builds the APK AND publishes it to the
+#    Releases section of the repo.
+# 2. Push to main, or click "Run workflow" manually -> just builds the APK
+#    as a plain downloadable Action artifact (no Release created).
 on:
   push:
     branches: [ main ]
+    tags: [ 'v*' ]
   workflow_dispatch:
+
+# Needed so the workflow is allowed to create a Release on your behalf.
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -35,3 +43,12 @@ jobs:
         with:
           name: memory-lane-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
+
+      # Only runs when this workflow was triggered by pushing a tag
+      # like v1.0.0 (i.e. github.ref starts with refs/tags/).
+      - name: Create GitHub Release with APK attached
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/debug/app-debug.apk
+          generate_release_notes: true
