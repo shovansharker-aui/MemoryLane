@@ -37,6 +37,7 @@ class ProjectAdapter(
                 onLongClick(project)
                 true
             }
+            binding.root.withBouncyPress()
         }
     }
 

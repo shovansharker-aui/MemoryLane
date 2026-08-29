@@ -35,6 +35,7 @@ class MediaAdapter(
                 if (item.isVideo) android.view.View.VISIBLE else android.view.View.GONE
 
             binding.root.setOnClickListener { onClick(item, position) }
+            binding.root.withBouncyPress()
         }
     }
 

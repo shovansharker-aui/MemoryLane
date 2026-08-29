@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Big soft rounding for project cards -->
+    <style name="ShapeAppearance.MemoryLane.Card" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">22dp</item>
+    </style>
+
+    <!-- Gentler rounding for grid thumbnails -->
+    <style name="ShapeAppearance.MemoryLane.Thumb" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Fully round for FAB / avatar chips -->
+    <style name="ShapeAppearance.MemoryLane.Round" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

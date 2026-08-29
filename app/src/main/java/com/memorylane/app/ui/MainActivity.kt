@@ -21,6 +21,10 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this)[ProjectViewModel::class.java]
 
+        binding.collapsingToolbar.title = "Memory Lane"
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
         adapter = ProjectAdapter(
             onClick = { project -> openProject(project) },
             onLongClick = { project -> viewModel.delete(project) }
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                 if (projects.isEmpty()) android.view.View.VISIBLE else android.view.View.GONE
         }
 
+        binding.fabAddProject.withBouncyPress()
         binding.fabAddProject.setOnClickListener {
             startActivity(Intent(this, CreateProjectActivity::class.java))
         }

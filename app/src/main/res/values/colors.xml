@@ -1,4 +1,15 @@
 <resources>
+    <!-- Cozy warm palette -->
+    <color name="cream_bg">#FBF3EA</color>
+    <color name="cream_bg_dark">#F3E6D8</color>
+    <color name="coral_primary">#E8734A</color>
+    <color name="coral_primary_dark">#D45F38</color>
+    <color name="coral_soft">#F7DDD0</color>
+    <color name="sage_secondary">#8FA688</color>
+    <color name="brown_text">#463C34</color>
+    <color name="brown_text_soft">#8A7B6E</color>
+    <color name="card_surface">#FFFFFF</color>
+
     <color name="purple_500">#6650a4</color>
     <color name="purple_700">#4F378B</color>
     <color name="teal_200">#03DAC5</color>

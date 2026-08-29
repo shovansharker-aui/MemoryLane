@@ -2,24 +2,42 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp">
+    android:layout_margin="4dp">
 
-    <ImageView
-        android:id="@+id/imageThumb"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:scaleType="centerCrop"
-        android:background="#DDDDDD"
-        android:contentDescription="Thumbnail" />
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/coral_soft"
+        app:rippleColor="@color/coral_primary">
 
-    <ImageView
-        android:id="@+id/iconVideo"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="4dp"
-        android:src="@android:drawable/ic_media_play"
-        android:visibility="gone"
-        android:contentDescription="Video" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageThumb"
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="Thumbnail" />
+
+            <ImageView
+                android:id="@+id/iconVideo"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="6dp"
+                android:padding="4dp"
+                android:background="@drawable/bg_video_badge"
+                android:src="@android:drawable/ic_media_play"
+                app:tint="@color/white"
+                android:visibility="gone"
+                android:contentDescription="Video" />
+
+        </FrameLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

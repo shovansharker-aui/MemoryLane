@@ -4,32 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/card_surface"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    app:rippleColor="@color/coral_soft">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="18dp">
 
-        <TextView
-            android:id="@+id/textProjectName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            tools:text="Cox's Bazar Trip" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            app:cardCornerRadius="26dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/coral_soft">
 
-        <TextView
-            android:id="@+id/textProjectDate"
-            android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_gallery"
+                app:tint="@color/coral_primary_dark"
+                android:contentDescription="Project" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textSize="13sp"
-            android:alpha="0.6"
-            tools:text="Aug 27, 2026" />
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textProjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/brown_text"
+                tools:text="Cox's Bazar Trip" />
+
+            <TextView
+                android:id="@+id/textProjectDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textSize="13sp"
+                android:textColor="@color/brown_text_soft"
+                tools:text="Aug 27, 2026" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_media_next"
+            app:tint="@color/brown_text_soft"
+            android:contentDescription="Open" />
 
     </LinearLayout>
 

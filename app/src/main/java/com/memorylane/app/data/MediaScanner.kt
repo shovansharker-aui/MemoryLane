@@ -31,8 +31,8 @@ object MediaScanner {
             val extension = name.substringAfterLast('.', "").lowercase()
 
             when {
-                extension in IMAGE_TYPES -> items.add(MediaItem(file.uri, name, isVideo = false))
-                extension in VIDEO_TYPES -> items.add(MediaItem(file.uri, name, isVideo = true))
+                extension in IMAGE_TYPES -> items.add(MediaItem(file.uri, name, isVideo = false, lastModified = file.lastModified()))
+                extension in VIDEO_TYPES -> items.add(MediaItem(file.uri, name, isVideo = true, lastModified = file.lastModified()))
             }
         }
 
