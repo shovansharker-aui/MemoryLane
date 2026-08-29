@@ -1,0 +1,45 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (contains SDK path, unique to each machine)
+local.properties
+
+# Log/profile files
+*.log
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+
+# Keystore files (never commit real signing keys)
+*.jks
+*.keystore
+
+# Google services (uncomment if you don't want to share Firebase config)
+# google-services.json
