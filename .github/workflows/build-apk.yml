@@ -1,9 +1,10 @@
 name: Build APK
 
-# Every push to main builds a debug APK AND publishes it to the Releases
-# section automatically — each build gets its own release, auto-numbered
-# (build-1, build-2, ...) unless you push an actual version tag like v1.0.0,
-# in which case that tag name is used instead.
+# Every push to main builds a size-optimized release APK (code/resource
+# shrinking + arm64-only) AND publishes it to the Releases section
+# automatically — each build gets its own release, auto-numbered
+# (build-1, build-2, ...) unless you push an actual version tag like
+# v1.0.0, in which case that tag name is used instead.
 on:
   push:
     branches: [ main ]
@@ -33,19 +34,15 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug
+      - name: Build release APK (shrunk, arm64-only)
+        run: ./gradlew assembleRelease
 
       - name: Upload APK as a downloadable artifact
         uses: actions/upload-artifact@v4
         with:
-          name: memory-lane-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: memory-lane-release-apk
+          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
 
-      # Decide the release's tag name: if this run was triggered by pushing
-      # an actual version tag (e.g. v1.0.0), use that. Otherwise, this was
-      # a normal push to main, so auto-generate one like "build-42" using
-      # GitHub's own run number, which always increases.
       - name: Determine release tag name
         id: tagname
         run: |
@@ -60,5 +57,5 @@ jobs:
         with:
           tag_name: ${{ steps.tagname.outputs.tag }}
           name: ${{ steps.tagname.outputs.tag }}
-          files: app/build/outputs/apk/debug/app-debug.apk
+          files: app/build/outputs/apk/release/app-arm64-v8a-release.apk
           generate_release_notes: true
