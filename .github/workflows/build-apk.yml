@@ -1,17 +1,15 @@
 name: Build APK
 
-# Two ways to trigger this:
-# 1. Push a tag like "v1.0.0" -> builds the APK AND publishes it to the
-#    Releases section of the repo.
-# 2. Push to main, or click "Run workflow" manually -> just builds the APK
-#    as a plain downloadable Action artifact (no Release created).
+# Every push to main builds a debug APK AND publishes it to the Releases
+# section automatically — each build gets its own release, auto-numbered
+# (build-1, build-2, ...) unless you push an actual version tag like v1.0.0,
+# in which case that tag name is used instead.
 on:
   push:
     branches: [ main ]
     tags: [ 'v*' ]
   workflow_dispatch:
 
-# Needed so the workflow is allowed to create a Release on your behalf.
 permissions:
   contents: write
 
@@ -44,11 +42,23 @@ jobs:
           name: memory-lane-debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
 
-      # Only runs when this workflow was triggered by pushing a tag
-      # like v1.0.0 (i.e. github.ref starts with refs/tags/).
+      # Decide the release's tag name: if this run was triggered by pushing
+      # an actual version tag (e.g. v1.0.0), use that. Otherwise, this was
+      # a normal push to main, so auto-generate one like "build-42" using
+      # GitHub's own run number, which always increases.
+      - name: Determine release tag name
+        id: tagname
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create GitHub Release with APK attached
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tagname.outputs.tag }}
+          name: ${{ steps.tagname.outputs.tag }}
           files: app/build/outputs/apk/debug/app-debug.apk
           generate_release_notes: true
