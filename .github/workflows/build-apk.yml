@@ -35,11 +35,14 @@ jobs:
       - name: Build release APK (shrunk, arm64-only)
         run: ./gradlew assembleRelease
 
+      - name: List actual APK output (for debugging path issues)
+        run: ls -la app/build/outputs/apk/release/
+
       - name: Upload APK as a downloadable artifact
         uses: actions/upload-artifact@v4
         with:
           name: memory-lane-release-apk
-          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+          path: app/build/outputs/apk/release/*.apk
 
       - name: Determine release tag name
         id: tagname
@@ -66,5 +69,5 @@ jobs:
         with:
           tag_name: ${{ steps.tagname.outputs.tag }}
           name: ${{ steps.tagname.outputs.tag }}
-          files: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+          files: app/build/outputs/apk/release/*.apk
           generate_release_notes: true
