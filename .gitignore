@@ -37,9 +37,12 @@ captures/
 *.ipr
 .DS_Store
 
-# Keystore files (never commit real signing keys)
+# Keystore files (never commit REAL signing keys — but debug.keystore here
+# is intentionally committed so every build, local or CI, signs identically
+# and installs cleanly over the last one)
 *.jks
 *.keystore
+!app/debug.keystore
 
 # Google services (uncomment if you don't want to share Firebase config)
 # google-services.json
