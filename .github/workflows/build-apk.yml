@@ -1,10 +1,8 @@
 name: Build APK
 
-# Every push to main builds a size-optimized release APK (code/resource
-# shrinking + arm64-only) AND publishes it to the Releases section
-# automatically — each build gets its own release, auto-numbered
-# (build-1, build-2, ...) unless you push an actual version tag like
-# v1.0.0, in which case that tag name is used instead.
+# Every push to main builds a size-optimized release APK AND publishes it
+# to the Releases section. Before publishing, ALL previous releases (and
+# their tags) are deleted, so only the most recent build is ever kept.
 on:
   push:
     branches: [ main ]
@@ -51,6 +49,17 @@ jobs:
           else
             echo "tag=build-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
           fi
+
+      # Deletes every existing release AND its tag, so the repo only ever
+      # keeps the single most recent build. "|| true" on each line means
+      # this doesn't fail the workflow the very first time, when there's
+      # nothing yet to delete.
+      - name: Delete all previous releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release list --limit 100 --json tagName -q '.[].tagName' | \
+            xargs -r -I{} gh release delete {} --cleanup-tag --yes || true
 
       - name: Create GitHub Release with APK attached
         uses: softprops/action-gh-release@v2
